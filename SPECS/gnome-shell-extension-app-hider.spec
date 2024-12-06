@@ -11,7 +11,8 @@ URL:            https://github.com/LynithDev/gnome-app-hider
 BuildArch:      noarch
 
 Source:         https://extensions.gnome.org/extension-data/%{extension}%{developer}.v%{version}.shell-extension.zip
-Source:        %{url}/raw/refs/heads/master/LICENSE
+
+Source1:        %{url}/raw/refs/heads/master/LICENSE
 
 Requires:       gnome-shell >= 45
 Recommends:     gnome-extensions-app
@@ -23,7 +24,9 @@ Provides:       %{extension} = %{version}-%{release}
 
 
 %prep
-%autosetup -n %{extension}-%{version}
+%autosetup -c
+
+cp %{SOURCE1} LICENSE
 
 # fix spurious-executable-perm and script-without-shebang rpmlint warnings/errors
 find -type f -print -exec chmod 644 {} \;
@@ -37,7 +40,7 @@ find -type f -print -exec chmod 644 {} \;
 # install main extension files
 install -d -m 0755 %{buildroot}%{_datadir}/gnome-shell/extensions/%{uuid}
 
-for file in *.js *.css *.json; do
+for file in *.*; do
     cp -a $file %{buildroot}%{_datadir}/gnome-shell/extensions/%{uuid}/
 done
 cp -a patches %{buildroot}%{_datadir}/gnome-shell/extensions/%{uuid}/
@@ -49,10 +52,10 @@ install -D -p -m 0644 \
 
 # install locale files
 cp -a locale %{buildroot}%{_datadir}/
-%find_lang %{extension}
+%find_lang %{uuid}
 
 
-%files -f %{extension}.lang
+%files -f %{uuid}.lang
 %license LICENSE
 %{_datadir}/gnome-shell/extensions/%{uuid}
 %{_datadir}/glib-2.0/schemas/org.gnome.shell.extensions.%{extension}.gschema.xml
