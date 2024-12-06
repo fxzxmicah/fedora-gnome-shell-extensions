@@ -11,7 +11,7 @@ URL:            https://github.com/aunetx/blur-my-shell
 BuildArch:      noarch
 
 Source:         https://extensions.gnome.org/extension-data/%{extension}%{developer}.v%{version}.shell-extension.zip
-Source0:        %{url}/raw/refs/heads/master/LICENSE
+Source:        %{url}/raw/refs/heads/master/LICENSE
 
 Requires:       gnome-shell >= 45
 Recommends:     gnome-extensions-app

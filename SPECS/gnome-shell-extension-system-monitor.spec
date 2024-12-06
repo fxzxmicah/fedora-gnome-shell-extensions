@@ -26,7 +26,7 @@ Provides:       %{extension} = %{version}-%{release}
 %prep
 %autosetup -n %{extension}-%{version}
 
-%patch0
+%patch 0
 
 # fix spurious-executable-perm and script-without-shebang rpmlint warnings/errors
 find -type f -print -exec chmod 644 {} \;
