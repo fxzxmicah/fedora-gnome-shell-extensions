@@ -1,0 +1,57 @@
+--- extension.js	2024-12-06 19:07:16.074979847 +0800
++++ extension.js.new	2024-12-06 19:07:17.741978470 +0800
+@@ -408,9 +408,6 @@
+             Gio.SettingsBindFlags.GET);
+         box.add_child(this._dlSection);
+ 
+-        this.menu.addMenuItem(
+-            new PopupMenu.PopupSeparatorMenuItem(_('Show')));
+-
+         this._cpuItem = this.menu.addAction(_('CPU'),
+             () => this._toggleSettings('show-cpu'));
+         this._memItem = this.menu.addAction(_('Memory'),
+@@ -422,29 +419,20 @@
+         this._dlItem = this.menu.addAction(_('Download'),
+             () => this._toggleSettings('show-download'));
+ 
++        const appSystem = Shell.AppSystem.get_default();
++        this._systemMonitorApp =
++            appSystem.lookup_app('io.missioncenter.MissionCenter.desktop');
++
+         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+ 
+-        this._appMenuItem = this.menu.addAction(_('Open System Monitor'),
++        this.menu.addAction(_('Open System Monitor'),
+             () => this._openSystemMonitor());
+ 
+-        const appSystem = Shell.AppSystem.get_default();
+-        appSystem.connectObject('installed-changed',
+-            () => this._updateSystemMonitorApp(), this);
+-        this._updateSystemMonitorApp();
+-
+         this._settings.connectObject('changed',
+             () => this._sync(), this);
+         this._sync();
+     }
+ 
+-    _updateSystemMonitorApp() {
+-        const appSystem = Shell.AppSystem.get_default();
+-        this._systemMonitorApp =
+-            appSystem.lookup_app('org.gnome.SystemMonitor.desktop');
+-        this._placeholder.gicon = this._systemMonitorApp?.icon ?? null;
+-        this.visible = this._systemMonitorApp != null;
+-    }
+-
+     _openSystemMonitor() {
+         this._systemMonitorApp.activate();
+         Main.overview.hide();
+@@ -479,7 +467,8 @@
+ export default class SystemMonitorExtension extends Extension {
+     enable() {
+         this._indicator = new Indicator(this.getSettings());
+-        Main.panel.addToStatusArea(this.uuid, this._indicator);
++        let pos = Main.sessionMode.panel.left.length;
++        Main.panel.addToStatusArea(this.uuid, this._indicator, pos, 'left');
+     }
+ 
+     disable() {
