@@ -32,7 +32,8 @@ find -type f -print -exec chmod 644 {} \;
 
 
 %build
-# Nothing to build
+# fix gettext-domain in metadata
+sed -i -E 's/"gettext-domain": ?"[^"]*"/"gettext-domain": "gnome-shell-extensions"/' metadata.json
 
 
 %install
@@ -48,10 +49,6 @@ cp -a icons %{buildroot}%{_datadir}/gnome-shell/extensions/%{uuid}/
 install -D -p -m 0644 \
     schemas/org.gnome.shell.extensions.%{extension}.gschema.xml \
     %{buildroot}%{_datadir}/glib-2.0/schemas/org.gnome.shell.extensions.%{extension}.gschema.xml
-
-# install locale files
-#cp -a locale %{buildroot}%{_datadir}/
-#%find_lang %{name}
 
 
 %files
