@@ -3,7 +3,7 @@
 %global uuid            %{extension}@%{developer}
 
 Name:           gnome-shell-extension-%{extension}
-Version:        4
+Version:        6
 Release:        %autorelease
 Summary:        GNOME Shell extension to monitor system from the top bar
 License:        GPL-2.0-only
@@ -15,6 +15,7 @@ Source:         https://extensions.gnome.org/extension-data/%{extension}%{develo
 Patch0:         system-monitor.patch
 
 Requires:       gnome-shell >= 45
+Requires:       gnome-shell-extension-common >= 45
 Recommends:     gnome-extensions-app
 Provides:       %{extension} = %{version}-%{release}
 
@@ -49,13 +50,11 @@ install -D -p -m 0644 \
     %{buildroot}%{_datadir}/glib-2.0/schemas/org.gnome.shell.extensions.%{extension}.gschema.xml
 
 # install locale files
-cp -a locale %{buildroot}%{_datadir}/
-%find_lang %{name}
+#cp -a locale %{buildroot}%{_datadir}/
+#%find_lang %{name}
 
 
-%files -f %{name}.lang
-%license COPYING
-%doc NEWS
+%files
 %{_datadir}/gnome-shell/extensions/%{uuid}
 %{_datadir}/glib-2.0/schemas/org.gnome.shell.extensions.%{extension}.gschema.xml
 
