@@ -3,7 +3,7 @@
 %global uuid            %{extension}@%{developer}
 
 Name:           gnome-shell-extension-%{extension}
-Version:        67
+Version:        68
 Release:        %autorelease
 Summary:        GNOME Shell extension to add a blur look to different parts of the GNOME Shell
 License:        GPL-3.0-only
@@ -12,9 +12,7 @@ BuildArch:      noarch
 
 Source:         https://extensions.gnome.org/extension-data/%{extension}%{developer}.v%{version}.shell-extension.zip
 
-Source1:        %{url}/raw/refs/heads/master/LICENSE
-
-Requires:       gnome-shell >= 45
+Requires:       gnome-shell >= 48
 Recommends:     gnome-extensions-app
 Provides:       %{extension} = %{version}-%{release}
 
@@ -25,8 +23,6 @@ Provides:       %{extension} = %{version}-%{release}
 
 %prep
 %autosetup -c
-
-cp %{SOURCE1} LICENSE
 
 # fix spurious-executable-perm and script-without-shebang rpmlint warnings/errors
 find -type f -print -exec chmod 644 {} \;
@@ -47,9 +43,10 @@ cp -a components %{buildroot}%{_datadir}/gnome-shell/extensions/%{uuid}/
 cp -a conveniences %{buildroot}%{_datadir}/gnome-shell/extensions/%{uuid}/
 cp -a dbus %{buildroot}%{_datadir}/gnome-shell/extensions/%{uuid}/
 cp -a effects %{buildroot}%{_datadir}/gnome-shell/extensions/%{uuid}/
-cp -a icons %{buildroot}%{_datadir}/gnome-shell/extensions/%{uuid}/
 cp -a preferences %{buildroot}%{_datadir}/gnome-shell/extensions/%{uuid}/
 cp -a ui %{buildroot}%{_datadir}/gnome-shell/extensions/%{uuid}/
+
+cp -a icons %{buildroot}%{_datadir}/
 
 # install the schema file
 install -D -p -m 0644 \
@@ -64,6 +61,7 @@ cp -a locale %{buildroot}%{_datadir}/
 %files -f %{uuid}.lang
 %license LICENSE
 %{_datadir}/gnome-shell/extensions/%{uuid}
+%{_datadir}/icons/*/*/*/*
 %{_datadir}/glib-2.0/schemas/org.gnome.shell.extensions.%{extension}.gschema.xml
 
 

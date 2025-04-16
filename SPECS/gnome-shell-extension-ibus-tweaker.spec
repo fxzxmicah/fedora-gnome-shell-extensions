@@ -1,18 +1,18 @@
-%global extension       app-hider
-%global developer       lynith.dev
+%global extension       ibus-tweaker
+%global developer       tuberry.github.com
 %global uuid            %{extension}@%{developer}
 
 Name:           gnome-shell-extension-%{extension}
-Version:        23
+Version:        48
 Release:        %autorelease
-Summary:        GNOME Shell extension to hide apps in GNOME's app menu
-License:        GPL-2.0-only
-URL:            https://github.com/LynithDev/gnome-app-hider
+Summary:        GNOME Shell extension to manage IBus input methods
+License:        GPL-3.0-or-later
+URL:            https://github.com/tuberry/ibus-tweaker
 BuildArch:      noarch
 
 Source:         https://extensions.gnome.org/extension-data/%{extension}%{developer}.v%{version}.shell-extension.zip
 
-Source1:        %{url}/raw/refs/heads/master/LICENSE#/LICENSE.%{extension}
+Source1:        %{url}/raw/refs/heads/master/LICENSE.md#/LICENSE.%{extension}
 
 Requires:       gnome-shell >= 48
 Recommends:     gnome-extensions-app
@@ -43,7 +43,7 @@ install -d -m 0755 %{buildroot}%{_datadir}/gnome-shell/extensions/%{uuid}
 for file in *.*; do
     cp -a $file %{buildroot}%{_datadir}/gnome-shell/extensions/%{uuid}/
 done
-cp -a patches %{buildroot}%{_datadir}/gnome-shell/extensions/%{uuid}/
+cp -a resource %{buildroot}%{_datadir}/gnome-shell/extensions/%{uuid}/
 
 # install the schema file
 install -D -p -m 0644 \
@@ -52,10 +52,10 @@ install -D -p -m 0644 \
 
 # install locale files
 cp -a locale %{buildroot}%{_datadir}/
-%find_lang %{uuid}
+%find_lang %{name}
 
 
-%files -f %{uuid}.lang
+%files -f %{name}.lang
 %license LICENSE
 %{_datadir}/gnome-shell/extensions/%{uuid}
 %{_datadir}/glib-2.0/schemas/org.gnome.shell.extensions.%{extension}.gschema.xml

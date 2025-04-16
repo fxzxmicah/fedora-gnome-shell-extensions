@@ -2,7 +2,6 @@ name: Build and Upload
 
 on:
   - push
-  - workflow_dispatch
 
 jobs:
   job:
@@ -20,8 +19,7 @@ jobs:
       run: |
         for spec in SPECS/*.spec; do
           spectool --directory SOURCES --get-files --all $spec &&
-          rpmbuild --define "_topdir ${GITHUB_WORKSPACE}" -bs $spec &&
-          rm -f SOURCES/LICENSE
+          rpmbuild --define "_topdir ${GITHUB_WORKSPACE}" -bs $spec
         done
 
     - name: Upload Copr
